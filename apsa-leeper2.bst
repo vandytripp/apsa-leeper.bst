@@ -42,7 +42,7 @@ ENTRY
     editor
     howpublished
     institution
-    journal
+    journaltitle
     key
     month
     note
@@ -56,10 +56,10 @@ ENTRY
     type
     url            %changed URL to url (for Mendeley)
     volume
-    year
+    date
   }
   { field.used etal.allowed etal.required} %%%XXX change
-  { extra.label sort.label list.year }
+  { extra.label sort.label list.date }
 
 INTEGERS { output.state before.all mid.sentence after.sentence after.block }
 
@@ -454,7 +454,7 @@ FUNCTION {format.inconf.title}        %New Conference/Proceedings Title function
 
 FUNCTION {empty.misc.check}
 { author empty$ title empty$ howpublished empty$
-  month empty$ year empty$ note empty$
+  month empty$ date empty$ note empty$
   and and and and and
   key empty$ not and
     { "all relevant fields are empty in " cite$ * warning$ }
@@ -484,12 +484,12 @@ FUNCTION {format.tr.number}
 
 FUNCTION {format.article.crossref}
 { key empty$
-    { journal empty$
-    { "need key or journal for " cite$ * " to crossref " * crossref *
+    { journaltitle empty$
+    { "need key or journaltitle for " cite$ * " to crossref " * crossref *
       warning$
       ""
     }
-    { "in {\em " journal * "\/} \cite{" * crossref * "}" *}
+    { "in {\em " journaltitle * "\/} \cite{" * crossref * "}" *}
       if$
     }
     { "{\em in} \citeasnoun{" crossref * "}" * }
@@ -725,7 +725,7 @@ FUNCTION {output.bibitem}
   if$
   make.full.label write$
   "}{" write$
-  list.year write$
+  list.date write$
   "}{" write$
   cite$ write$
   "}" write$
@@ -741,7 +741,7 @@ FUNCTION {list.label.output}
 FUNCTION {article}
 { output.bibitem
   list.label.output
-  list.year output.nonnull
+  list.date output.nonnull
   new.block
   author "author" item.check
   title.field field.used =
@@ -749,7 +749,7 @@ FUNCTION {article}
     { format.title quote "title" output.check }
   if$
   crossref missing$
-    { journal emphasize "journal" duplicate$ item.check
+    { journaltitle emphasize "journaltitle" duplicate$ item.check
       volume empty$
         { ": Forthcoming" * output new.block }
         { "" * format.vol.num.pages * output }
@@ -760,7 +760,6 @@ FUNCTION {article}
     }
   if$
   new.block
-  note output
   fin.entry
 %  write.url %Exclude URL from articles
 }
@@ -768,7 +767,7 @@ FUNCTION {article}
 FUNCTION {book}
 { output.bibitem
   list.label.output
-  list.year output.nonnull
+  list.date output.nonnull
   new.block
   author empty$
     { editor "author and editor" item.check }
@@ -795,7 +794,6 @@ FUNCTION {book}
     }
   if$
   new.block
-  note output
   fin.entry
 %  write.url %Exclude URL from articles
 }
@@ -803,7 +801,7 @@ FUNCTION {book}
 FUNCTION {booklet}
 { output.bibitem
   list.label.output
-  list.year output.nonnull
+  list.date output.nonnull
   new.block
   title.field field.used =
     { skip$ }
@@ -812,7 +810,6 @@ FUNCTION {booklet}
   format.address output
   howpublished output
   new.block
-  note output
   fin.entry
   write.url
 }
@@ -820,7 +817,7 @@ FUNCTION {booklet}
 FUNCTION {inbook}
 { output.bibitem
   list.label.output
-  list.year output.nonnull
+  list.date output.nonnull
   new.block
   author empty$
     { editor "author and editor" item.check }
@@ -852,7 +849,6 @@ FUNCTION {inbook}
   if$
   format.pages output.check
   new.block
-  note output
   fin.entry
   write.url
 }
@@ -860,7 +856,7 @@ FUNCTION {inbook}
 FUNCTION {incollection}
 { output.bibitem
   list.label.output
-  list.year output.nonnull
+  list.date output.nonnull
   new.block
   title.field field.used =
     { skip$ }
@@ -885,7 +881,6 @@ FUNCTION {incollection}
     { format.pages output }
   if$
   new.block
-  note output
   fin.entry
 %  write.url                             %Exclude URL from articles
 }
@@ -893,7 +888,7 @@ FUNCTION {incollection}
 FUNCTION {inproceedings}
 { output.bibitem
   list.label.output
-  list.year output.nonnull
+  list.date output.nonnull
   new.block
   title.field field.used =
     { skip$ }
@@ -934,7 +929,7 @@ FUNCTION {conference} { inproceedings }
 FUNCTION {manual}
 { output.bibitem
   list.label.output
-  list.year output.nonnull
+  list.date output.nonnull
   new.block
   title.field field.used =
     { skip$ }
@@ -954,7 +949,7 @@ FUNCTION {manual}
     }
   if$
   new.block
-  note output
+%  note output
   fin.entry
   write.url
 }
@@ -962,7 +957,7 @@ FUNCTION {manual}
 FUNCTION {mastersthesis}
 { output.bibitem
   list.label.output
-  list.year output.nonnull
+  list.date output.nonnull
   new.block
   author "author" item.check
   title.field field.used =
@@ -973,7 +968,7 @@ FUNCTION {mastersthesis}
   school "school" output.check
   format.address output
   new.block
-  note output
+%  note output
   fin.entry
 %  write.url                                 %Exclude URL from articles
 }
@@ -981,7 +976,7 @@ FUNCTION {mastersthesis}
 FUNCTION {misc}
 { output.bibitem
   list.label.output
-  list.year output.nonnull
+  list.date output.nonnull
   new.block
   title.field field.used =
     { skip$ }
@@ -1001,7 +996,7 @@ FUNCTION {misc}
 FUNCTION {phdthesis}
 { output.bibitem
   list.label.output
-  list.year output.nonnull
+  list.date output.nonnull
   new.block
   author "author" item.check
   title.field field.used =
@@ -1014,7 +1009,7 @@ FUNCTION {phdthesis}
   school "school" output.check
   format.address output
   new.block
-  note output
+%  note output
   fin.entry
 %  write.url                                 %Exclude URL from articles
 }
@@ -1022,7 +1017,7 @@ FUNCTION {phdthesis}
 FUNCTION {proceedings}
 { output.bibitem
   list.label.output
-  list.year output.nonnull
+  list.date output.nonnull
   new.block
   title.field field.used =
     { skip$ }
@@ -1048,7 +1043,7 @@ FUNCTION {proceedings}
     }
   if$
   new.block
-  note output
+%  note output
   fin.entry
   write.url
 }
@@ -1056,7 +1051,7 @@ FUNCTION {proceedings}
 FUNCTION {techreport}
 { output.bibitem
   list.label.output
-  list.year output.nonnull
+  list.date output.nonnull
   new.block
   author "author" item.check
   title.field field.used =
@@ -1067,7 +1062,7 @@ FUNCTION {techreport}
   institution "institution" output.check
   format.address output
   new.block
-  note output
+%  note output
   fin.entry
   write.url
 }
@@ -1075,7 +1070,7 @@ FUNCTION {techreport}
 FUNCTION {unpublished}
 { output.bibitem
   list.label.output
-  list.year output.nonnull
+  list.date output.nonnull
   new.block
   author "author" item.check
   title.field field.used =
@@ -1203,7 +1198,7 @@ FUNCTION {calc.label} %%%XXX change
     { sort.format.title }
     { sortify.names }
   if$
-  year field.or.null purify$ #-1 #4 substring$ sortify
+  date field.or.null purify$ #-1 #4 substring$ sortify
   *
   'sort.label :=
 }
@@ -1334,9 +1329,9 @@ FUNCTION {reverse.pass}
     { "a" 'extra.label := }
     'skip$
   if$
-  year empty$
-    { "N.d." extra.label emphasize * 'list.year := }
-    { year extra.label emphasize * 'list.year := }
+  date empty$
+    { "N.d." extra.label emphasize * 'list.date := }
+    { date extra.label emphasize * 'list.date := }
   if$
   extra.label 'next.extra :=
 }
@@ -1359,7 +1354,7 @@ FUNCTION {second.presort}
   if$
   "    "
   *
-  list.year field.or.null sortify
+  list.date field.or.null sortify
   *
   "    "
   *
